@@ -24,6 +24,8 @@ class PairState {
   PairState({required this.chosenPair});
 
   PairState copyWith({TradingViewSymbol? chosenPair}) {
-    return PairState(chosenPair: chosenPair ?? this.chosenPair);
+    return PairState(
+      chosenPair: chosenPair ?? this.chosenPair,
+    );
   }
 }

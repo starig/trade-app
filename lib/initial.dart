@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:trade_app/cubits/app/app_cubit.dart';
-import 'package:trade_app/layout.dart';
+import 'package:trade_app/cubits/pair/pair_cubit.dart';
 import 'package:trade_app/screens/splash_screen.dart';
 import 'package:trade_app/screens/trade_screen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -17,40 +17,48 @@ class InitialScreen extends StatefulWidget {
   State<InitialScreen> createState() => _InitialScreenState();
 }
 
+String generateHtmlUri(String symbol) {
+  return Uri.dataFromString(
+    '''
+    <div class="tradingview-widget-container">
+      <div id="tradingview_f70f4"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+      <script type="text/javascript">
+      new TradingView.widget(
+      {
+        "autosize": true,
+        "symbol": "NASDAQ:$symbol",
+        "interval": "D",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "8",
+        "locale": "en",
+        "toolbar_bg": "#f1f3f6",
+        "enable_publishing": false,
+        "hide_top_toolbar": true,
+        "hide_legend": true,
+        "allow_symbol_change": true,
+        "save_image": false,
+        "container_id": "tradingview_f70f4"
+      }
+      );
+      </script>
+    </div>
+    ''',
+    mimeType: 'text/html',
+    encoding: Encoding.getByName('utf-8'),
+  ).toString();
+}
+
 class _InitialScreenState extends State<InitialScreen> {
   int webViewProgress = 0;
   late WebViewController controller;
 
-  final htmlUri = Uri.dataFromString(
-    '''
-      <div class="tradingview-widget-container">
-  <div id="tradingview_f70f4"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <script type="text/javascript">
-  new TradingView.widget(
-  {
-  "autosize": true,
-  "symbol": "NASDAQ:AAPL",
-  "interval": "D",
-  "timezone": "Etc/UTC",
-  "theme": "dark",
-  "style": "8",
-  "locale": "en",
-  "toolbar_bg": "#f1f3f6",
-  "enable_publishing": false,
-  "hide_top_toolbar": true,
-  "hide_legend": true,
-  "allow_symbol_change": true,
-  "save_image": false,
-  "container_id": "tradingview_f70f4"
-}
-  );
-  </script>
-</div>
-      ''',
-    mimeType: 'text/html',
-    encoding: Encoding.getByName('utf-8'),
-  ).toString();
+  late TradingViewSymbol initSymbol;
+
+
+  String stockSymbol = 'AAPL';
+
 
   askForNotifications() async {
     await Permission.notification.isDenied.then((value) async {
@@ -66,6 +74,7 @@ class _InitialScreenState extends State<InitialScreen> {
   @override
   void initState() {
     super.initState();
+    String htmlUri = generateHtmlUri(stockSymbol);
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
@@ -94,7 +103,11 @@ class _InitialScreenState extends State<InitialScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(builder: (context, state) {
       if (state.isLoaded) {
-        return TradeScreen(controller: controller);
+        return BlocBuilder<PairCubit, PairState>(
+          builder: (context, state) {
+            return TradeScreen(controller: controller);
+          },
+        );
       } else {
         return SplashScreen();
       }
