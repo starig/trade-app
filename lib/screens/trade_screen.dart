@@ -49,7 +49,7 @@ class _TradeScreenState extends State<TradeScreen> {
             title: Text(
               "Trade",
               style:
-              TextStyle(fontWeight: FontWeight.w700, fontSize: scale(22)),
+                  TextStyle(fontWeight: FontWeight.w700, fontSize: scale(22)),
             ),
           ),
           child: SingleChildScrollView(
@@ -94,7 +94,7 @@ class _TradeScreenState extends State<TradeScreen> {
                               SizedBox(),
                               Text(
                                 state.chosenPair.name,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -148,7 +148,7 @@ class _TradeScreenState extends State<TradeScreen> {
                               ),
                               child: Column(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Timer',
@@ -161,7 +161,7 @@ class _TradeScreenState extends State<TradeScreen> {
                                   Expanded(
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         GestureDetector(
                                           onTap: () {
@@ -181,32 +181,31 @@ class _TradeScreenState extends State<TradeScreen> {
                                                   isTimerFocused = true;
                                                 });
                                                 showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                    context) {
-                                                      return TimerPickerDialog(
-                                                        selectedMinutes:
-                                                        state.timer
-                                                            .minutes,
-                                                        selectedSeconds:
-                                                        state.timer
-                                                            .seconds,
-                                                      );
-                                                    })
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return TimerPickerDialog(
+                                                            selectedMinutes:
+                                                                state.timer
+                                                                    .minutes,
+                                                            selectedSeconds:
+                                                                state.timer
+                                                                    .seconds,
+                                                          );
+                                                        })
                                                     .whenComplete(
-                                                        () =>
-                                                        setState(() {
-                                                          isTimerFocused =
-                                                          false;
-                                                        }));
+                                                        () => setState(() {
+                                                              isTimerFocused =
+                                                                  false;
+                                                            }));
                                               },
-                                              child:
-                                              Text(_timerController.text,
+                                              child: Text(
+                                                _timerController.text,
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w700,
                                                     fontSize: scale(16),
-                                                    color: white
-                                                ),)),
+                                                    color: white),
+                                              )),
                                         ),
                                         GestureDetector(
                                           onTap: () {
@@ -248,7 +247,7 @@ class _TradeScreenState extends State<TradeScreen> {
                               ),
                               child: Column(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Intestment',
@@ -261,7 +260,7 @@ class _TradeScreenState extends State<TradeScreen> {
                                   Expanded(
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         GestureDetector(
                                           onTap: () {
@@ -296,12 +295,17 @@ class _TradeScreenState extends State<TradeScreen> {
                                                   TextSelection.fromPosition(
                                                       TextPosition(
                                                           offset:
-                                                          value.length));
+                                                              value.length));
                                               context
                                                   .read<TradeCubit>()
                                                   .setInvestmentCount(value);
+                                              if (value == "") {
+                                                context
+                                                    .read<TradeCubit>()
+                                                    .setInvestmentCount("0");
+                                              }
                                             },
-                                            decoration: InputDecoration(
+                                            decoration: const InputDecoration(
                                               border: InputBorder.none,
                                               enabledBorder: InputBorder.none,
                                               isCollapsed: true,
@@ -349,12 +353,16 @@ class _TradeScreenState extends State<TradeScreen> {
                             child: Container(
                               height: scale(54),
                               child: ElevatedButton(
-                                onPressed: state.isPending ? null : () {
-                                    context.read<TradeCubit>().sell();
-                                    showSuccessSnackbar(context, 'Successful');
-                                },
+                                onPressed: state.isPending
+                                    ? null
+                                    : () {
+                                        context.read<TradeCubit>().sell();
+                                        showSuccessSnackbar(
+                                            context, 'Successful');
+                                      },
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: state.isPending ? grey : red,
+                                    backgroundColor:
+                                        state.isPending ? grey : red,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(
                                         scale(12),
@@ -364,8 +372,8 @@ class _TradeScreenState extends State<TradeScreen> {
                                 child: Text(
                                   'Sell',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: scale(24),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: scale(24),
                                   ),
                                 ),
                               ),
@@ -379,14 +387,19 @@ class _TradeScreenState extends State<TradeScreen> {
                             child: Container(
                               height: scale(54),
                               child: ElevatedButton(
-                                onPressed: state.isPending ? null : () {
-                                  bool response = context.read<TradeCubit>().buy();
-                                  if (response) {
-                                    showSuccessSnackbar(context, 'Successful');
-                                  } else {
-                                    showUnsuccessSnackbar(context, 'Not successful');
-                                  }
-                                },
+                                onPressed: state.isPending
+                                    ? null
+                                    : () {
+                                        bool response =
+                                            context.read<TradeCubit>().buy();
+                                        if (response) {
+                                          showSuccessSnackbar(
+                                              context, 'Successful');
+                                        } else {
+                                          showUnsuccessSnackbar(
+                                              context, 'Not successful');
+                                        }
+                                      },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: green,
                                     shape: RoundedRectangleBorder(

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_app/config/colors.dart';
@@ -15,7 +13,6 @@ class ChoosePairScreen extends StatefulWidget {
   State<ChoosePairScreen> createState() => _ChoosePairScreenState();
 }
 
-
 class _ChoosePairScreenState extends State<ChoosePairScreen> {
   @override
   Widget build(BuildContext context) {
@@ -24,7 +21,6 @@ class _ChoosePairScreenState extends State<ChoosePairScreen> {
         List<Widget> children = [];
 
         for (TradingViewSymbol pair in TradingViewSymbol.values) {
-
           children.add(Container(
             height: scale(54),
             child: ElevatedButton(
@@ -33,7 +29,8 @@ class _ChoosePairScreenState extends State<ChoosePairScreen> {
                 context.read<AppCubit>().setIsPairChanged(true);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: pair == state.chosenPair ? green : secondButton,
+                backgroundColor:
+                    pair == state.chosenPair ? green : secondButton,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(scale(12)),

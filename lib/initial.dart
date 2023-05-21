@@ -108,7 +108,6 @@ class _InitialScreenState extends State<InitialScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(builder: (context, appState) {
@@ -121,7 +120,7 @@ class _InitialScreenState extends State<InitialScreen> {
               controller.loadRequest(Uri.parse(htmlUri));
               context.read<AppCubit>().setIsPairChanged(false);
             }
-            List<Widget> _screens = [
+            List<Widget> screens = [
               TradeScreen(controller: controller),
               TopScreen(),
             ];
@@ -134,43 +133,43 @@ class _InitialScreenState extends State<InitialScreen> {
               ),
               child: Scaffold(
                 backgroundColor:
-                appState.isLoaded ? background : Colors.transparent,
-                body: _screens[_selectedIndex],
-                bottomNavigationBar: appState.showBottomNavbar ? Container(
-                  decoration: BoxDecoration(
-                      border: Border(
-                          top: BorderSide(
-                              width: scale(0.5),
-                              color: line
-                          )
+                    appState.isLoaded ? background : Colors.transparent,
+                body: screens[_selectedIndex],
+                bottomNavigationBar: appState.showBottomNavbar
+                    ? Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                top: BorderSide(
+                                    width: scale(0.5), color: line))),
+                        child: BottomNavigationBar(
+                          backgroundColor: background,
+                          currentIndex: _selectedIndex,
+                          selectedItemColor: green,
+                          unselectedItemColor: blueGrey,
+                          onTap: _onItemTapped,
+                          items: [
+                            BottomNavigationBarItem(
+                              icon: SvgPicture.asset("assets/icons/trade.svg"),
+                              activeIcon: SvgPicture.asset(
+                                  "assets/icons/trade-active.svg"),
+                              label: 'Trade',
+                            ),
+                            BottomNavigationBarItem(
+                              icon: SvgPicture.asset("assets/icons/user.svg"),
+                              activeIcon: SvgPicture.asset(
+                                  "assets/icons/user-active.svg"),
+                              label: 'Top',
+                            ),
+                          ],
+                        ),
                       )
-                  ),
-                  child: BottomNavigationBar(
-                    backgroundColor: background,
-                    currentIndex: _selectedIndex,
-                    selectedItemColor: green,
-                    unselectedItemColor: blueGrey,
-                    onTap: _onItemTapped,
-                    items: [
-                      BottomNavigationBarItem(
-                        icon: SvgPicture.asset("assets/icons/trade.svg"),
-                        activeIcon: SvgPicture.asset("assets/icons/trade-active.svg"),
-                        label: 'Trade',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: SvgPicture.asset("assets/icons/user.svg"),
-                        activeIcon: SvgPicture.asset("assets/icons/user-active.svg"),
-                        label: 'Top',
-                      ),
-                    ],
-                  ),
-                ) : null,
+                    : null,
               ),
             );
           },
         );
       } else {
-        return SplashScreen();
+        return const SplashScreen();
       }
     });
   }

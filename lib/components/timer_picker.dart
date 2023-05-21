@@ -6,8 +6,9 @@ class TimerPickerDialog extends StatefulWidget {
   final int selectedMinutes;
   final int selectedSeconds;
 
-  const TimerPickerDialog({Key? key, required this.selectedSeconds, required this.selectedMinutes}) : super(key: key);
-
+  const TimerPickerDialog(
+      {Key? key, required this.selectedSeconds, required this.selectedMinutes})
+      : super(key: key);
 
   @override
   _TimerPickerDialogState createState() => _TimerPickerDialogState();
@@ -76,9 +77,9 @@ class _TimerPickerDialogState extends State<TimerPickerDialog> {
           child: Text('Set'),
           onPressed: () {
             String timeString =
-                '${selectedMinutes.toString().padLeft(2, '0')}:${selectedSeconds
-                .toString().padLeft(2, '0')}';
-            context.read<TradeCubit>().setTimerCount(Timer(minutes: selectedMinutes, seconds: selectedSeconds));
+                '${selectedMinutes.toString().padLeft(2, '0')}:${selectedSeconds.toString().padLeft(2, '0')}';
+            context.read<TradeCubit>().setTimerCount(
+                Timer(minutes: selectedMinutes, seconds: selectedSeconds));
             Navigator.of(context).pop();
           },
         ),

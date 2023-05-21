@@ -16,14 +16,15 @@ class TradeState {
   TradeState(
       {required this.balance,
       required this.investmentCount,
-      required this.timer, required this.isPending});
+      required this.timer,
+      required this.isPending});
 
-  TradeState copyWith({int? balance, int? investmentCount, Timer? timer, bool? isPending}) {
+  TradeState copyWith(
+      {int? balance, int? investmentCount, Timer? timer, bool? isPending}) {
     return TradeState(
-      balance: balance ?? this.balance,
-      investmentCount: investmentCount ?? this.investmentCount,
-      timer: timer ?? this.timer,
-      isPending: isPending ?? this.isPending
-    );
+        balance: balance ?? this.balance,
+        investmentCount: investmentCount ?? this.investmentCount,
+        timer: timer ?? this.timer,
+        isPending: isPending ?? this.isPending);
   }
 }

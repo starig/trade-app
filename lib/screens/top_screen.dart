@@ -120,11 +120,14 @@ class _TopScreenState extends State<TopScreen> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(const Duration(minutes: 3), (_) {
+    Timer.periodic(
+        const Duration(
+          minutes: 3,
+          // seconds: 3,
+        ), (_) {
       updateValues();
     });
   }
-
 
   @override
   Widget build(BuildContext context) {

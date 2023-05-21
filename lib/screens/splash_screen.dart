@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_app/components/loader.dart';
-import 'package:trade_app/config/colors.dart';
 import 'package:trade_app/config/scale.dart';
 import 'package:trade_app/cubits/app/app_cubit.dart';
 import 'package:trade_app/layout.dart';
@@ -44,20 +41,20 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
-  builder: (context, state) {
-    controller.animateTo(state.loadingProgress / 100);
-    return Layout(
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: scale(38)),
-          child: Loader(
-            barText: barText,
-            controller: controller,
+      builder: (context, state) {
+        controller.animateTo(state.loadingProgress / 100);
+        return Layout(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: scale(38)),
+              child: Loader(
+                barText: barText,
+                controller: controller,
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
-  },
-);
   }
 }

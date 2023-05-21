@@ -6,9 +6,17 @@ class AppState {
   bool isLoaded;
   bool isPairChanged;
 
-  AppState({required this.loadingProgress, required this.showBottomNavbar, required this.isLoaded, required this.isPairChanged});
+  AppState(
+      {required this.loadingProgress,
+      required this.showBottomNavbar,
+      required this.isLoaded,
+      required this.isPairChanged});
 
-  AppState copyWith({double? loadingProgress, bool? showBottomNavbar, bool? isLoaded, bool? isPairChanged}) {
+  AppState copyWith(
+      {double? loadingProgress,
+      bool? showBottomNavbar,
+      bool? isLoaded,
+      bool? isPairChanged}) {
     return AppState(
       loadingProgress: loadingProgress ?? this.loadingProgress,
       showBottomNavbar: showBottomNavbar ?? this.showBottomNavbar,

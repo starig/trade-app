@@ -3,12 +3,12 @@ import 'package:bloc/bloc.dart';
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
-  AppCubit() : super(AppState(
-    loadingProgress: 0,
-    showBottomNavbar: false,
-    isLoaded: false,
-    isPairChanged: false
-  ));
+  AppCubit()
+      : super(AppState(
+            loadingProgress: 0,
+            showBottomNavbar: false,
+            isLoaded: false,
+            isPairChanged: false));
 
   setLoadingProgress(double value) {
     state.loadingProgress = value;

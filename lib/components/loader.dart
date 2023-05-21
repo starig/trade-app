@@ -1,14 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:trade_app/config/colors.dart';
 import 'package:trade_app/config/scale.dart';
-import 'package:trade_app/layout.dart';
 
 class Loader extends StatefulWidget {
   final String barText;
   final AnimationController controller;
-  const Loader({Key? key, required this.barText, required this.controller}) : super(key: key);
+
+  const Loader({Key? key, required this.barText, required this.controller})
+      : super(key: key);
 
   @override
   State<Loader> createState() => _LoaderState();
