@@ -173,50 +173,37 @@ class _TradeScreenState extends State<TradeScreen> {
                                           ),
                                         ),
                                         Container(
-                                          width: scale(46),
-                                          child: TextFormField(
-                                            controller: _timerController,
-                                            keyboardType: TextInputType.number,
-                                            readOnly: true,
-                                            onTap: () {
-                                              setState(() {
-                                                isTimerFocused = true;
-                                              });
-                                              showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return TimerPickerDialog(
-                                                      selectedMinutes:
-                                                          state.timer.minutes,
-                                                      selectedSeconds:
-                                                          state.timer.seconds,
-                                                    );
-                                                  });
-                                            },
-                                            onTapOutside: (e) {
-                                              FocusScope.of(context).unfocus();
-                                              setState(() {
-                                                isTimerFocused = false;
-                                              });
-                                            },
-                                            onChanged: (String value) {
-                                              // _timerController.text = value;
-                                              // _timerController.selection = TextSelection.fromPosition(TextPosition(offset: value.length));
-                                              // context.read<TradeCubit>().setInvestmentCount(value);
-                                            },
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              isCollapsed: true,
-                                              filled: true,
-                                              fillColor: Colors.transparent,
-                                            ),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: white,
-                                            ),
-                                          ),
+                                          width: scale(47),
+                                          child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  isTimerFocused = true;
+                                                });
+                                                showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return TimerPickerDialog(
+                                                            selectedMinutes:
+                                                                state.timer
+                                                                    .minutes,
+                                                            selectedSeconds:
+                                                                state.timer
+                                                                    .seconds,
+                                                          );
+                                                        })
+                                                    .whenComplete(
+                                                        () => setState(() {
+                                                              isTimerFocused =
+                                                                  false;
+                                                            }));
+                                              },
+                                              child:
+                                                  Text(_timerController.text, style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: scale(16),
+                                                    color: white
+                                                  ),)),
                                         ),
                                         GestureDetector(
                                           onTap: () {
