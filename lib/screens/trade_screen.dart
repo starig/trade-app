@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trade_app/components/balance.dart';
 import 'package:trade_app/components/timer_picker.dart';
 import 'package:trade_app/config/colors.dart';
+import 'package:trade_app/config/helpers.dart';
 import 'package:trade_app/config/scale.dart';
 import 'package:trade_app/cubits/app/app_cubit.dart';
 import 'package:trade_app/cubits/pair/pair_cubit.dart';
@@ -48,7 +49,7 @@ class _TradeScreenState extends State<TradeScreen> {
             title: Text(
               "Trade",
               style:
-                  TextStyle(fontWeight: FontWeight.w700, fontSize: scale(22)),
+              TextStyle(fontWeight: FontWeight.w700, fontSize: scale(22)),
             ),
           ),
           child: SingleChildScrollView(
@@ -56,17 +57,17 @@ class _TradeScreenState extends State<TradeScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: scale(30)),
-                  child: Balance(),
+                  child: const Balance(),
                 ),
                 SizedBox(
                   height: scale(25),
                 ),
-                // Container(
-                //   height: scale(321),
-                //   child: WebViewWidget(
-                //     controller: widget.controller,
-                //   ),
-                // ),
+                Container(
+                  height: scale(321),
+                  child: WebViewWidget(
+                    controller: widget.controller,
+                  ),
+                ),
                 SizedBox(
                   height: scale(16),
                 ),
@@ -147,7 +148,7 @@ class _TradeScreenState extends State<TradeScreen> {
                               ),
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Timer',
@@ -160,7 +161,7 @@ class _TradeScreenState extends State<TradeScreen> {
                                   Expanded(
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         GestureDetector(
                                           onTap: () {
@@ -173,37 +174,39 @@ class _TradeScreenState extends State<TradeScreen> {
                                           ),
                                         ),
                                         Container(
-                                          width: scale(47),
+                                          width: scale(50),
                                           child: GestureDetector(
                                               onTap: () {
                                                 setState(() {
                                                   isTimerFocused = true;
                                                 });
                                                 showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return TimerPickerDialog(
-                                                            selectedMinutes:
-                                                                state.timer
-                                                                    .minutes,
-                                                            selectedSeconds:
-                                                                state.timer
-                                                                    .seconds,
-                                                          );
-                                                        })
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                    context) {
+                                                      return TimerPickerDialog(
+                                                        selectedMinutes:
+                                                        state.timer
+                                                            .minutes,
+                                                        selectedSeconds:
+                                                        state.timer
+                                                            .seconds,
+                                                      );
+                                                    })
                                                     .whenComplete(
-                                                        () => setState(() {
-                                                              isTimerFocused =
-                                                                  false;
-                                                            }));
+                                                        () =>
+                                                        setState(() {
+                                                          isTimerFocused =
+                                                          false;
+                                                        }));
                                               },
                                               child:
-                                                  Text(_timerController.text, style: TextStyle(
+                                              Text(_timerController.text,
+                                                style: TextStyle(
                                                     fontWeight: FontWeight.w700,
                                                     fontSize: scale(16),
                                                     color: white
-                                                  ),)),
+                                                ),)),
                                         ),
                                         GestureDetector(
                                           onTap: () {
@@ -245,7 +248,7 @@ class _TradeScreenState extends State<TradeScreen> {
                               ),
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Intestment',
@@ -258,7 +261,7 @@ class _TradeScreenState extends State<TradeScreen> {
                                   Expanded(
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         GestureDetector(
                                           onTap: () {
@@ -293,7 +296,7 @@ class _TradeScreenState extends State<TradeScreen> {
                                                   TextSelection.fromPosition(
                                                       TextPosition(
                                                           offset:
-                                                              value.length));
+                                                          value.length));
                                               context
                                                   .read<TradeCubit>()
                                                   .setInvestmentCount(value);
@@ -335,61 +338,76 @@ class _TradeScreenState extends State<TradeScreen> {
                 SizedBox(
                   height: scale(11),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: scale(30)),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          height: scale(54),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: red,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    scale(12),
+                BlocBuilder<TradeCubit, TradeState>(
+                  builder: (context, state) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: scale(30)),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              height: scale(54),
+                              child: ElevatedButton(
+                                onPressed: state.isPending ? null : () {
+                                    context.read<TradeCubit>().sell();
+                                    showSuccessSnackbar(context, 'Successful');
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: state.isPending ? grey : red,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        scale(12),
+                                      ),
+                                    ),
+                                    elevation: 0),
+                                child: Text(
+                                  'Sell',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: scale(24),
                                   ),
                                 ),
-                                elevation: 0),
-                            child: Text(
-                              'Sell',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: scale(24)),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: scale(11),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          height: scale(54),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: green,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    scale(12),
-                                  ),
+                          SizedBox(
+                            width: scale(11),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              height: scale(54),
+                              child: ElevatedButton(
+                                onPressed: state.isPending ? null : () {
+                                  bool response = context.read<TradeCubit>().buy();
+                                  if (response) {
+                                    showSuccessSnackbar(context, 'Successful');
+                                  } else {
+                                    showUnsuccessSnackbar(context, 'Not successful');
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        scale(12),
+                                      ),
+                                    ),
+                                    elevation: 0),
+                                child: Text(
+                                  'Buy',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: scale(24)),
                                 ),
-                                elevation: 0),
-                            child: Text(
-                              'Buy',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: scale(24)),
+                              ),
                             ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

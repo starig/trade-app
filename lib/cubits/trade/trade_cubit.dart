@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:trade_app/config/helpers.dart';
 
 part 'trade_state.dart';
 
@@ -10,6 +13,7 @@ class TradeCubit extends Cubit<TradeState> {
             balance: 10000,
             investmentCount: 1000,
             timer: Timer(minutes: 0, seconds: 10),
+            isPending: false,
           ),
         );
 
@@ -60,5 +64,52 @@ class TradeCubit extends Cubit<TradeState> {
       state.timer.seconds += 1;
     }
     emit(state.copyWith(timer: state.timer));
+  }
+
+  sell() {
+    state.isPending = true;
+    emit(state.copyWith(isPending: state.isPending));
+    Future.delayed(Duration(seconds: 1), () {
+      state.balance += state.investmentCount;
+      state.investmentCount = (state.balance / 100 * 10).floor();
+      state.isPending = false;
+      emit(state.copyWith(
+        balance: state.balance,
+        investmentCount: state.investmentCount,
+        isPending: state.isPending,
+      ));
+    });
+  }
+
+  bool buy() {
+    state.isPending = true;
+    emit(state.copyWith(isPending: state.isPending));
+    Random random = Random();
+    int randomNumber = random.nextInt(2) + 1;
+    if (randomNumber == 1) {
+      Future.delayed(Duration(seconds: 1), () {
+        state.balance -= (state.investmentCount / 100 * 70).floor();
+        state.investmentCount = (state.balance / 100 * 10).floor();
+        state.isPending = false;
+        emit(state.copyWith(
+          balance: state.balance,
+          investmentCount: state.investmentCount,
+          isPending: state.isPending,
+        ));
+      });
+      return true;
+    } else {
+      Future.delayed(Duration(seconds: 1), () {
+        state.balance -= state.investmentCount;
+        state.investmentCount = (state.balance / 100 * 10).floor();
+        state.isPending = false;
+        emit(state.copyWith(
+          balance: state.balance,
+          investmentCount: state.investmentCount,
+          isPending: state.isPending,
+        ));
+      });
+      return false;
+    }
   }
 }
