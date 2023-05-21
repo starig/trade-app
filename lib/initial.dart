@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:trade_app/config/colors.dart';
 import 'package:trade_app/cubits/app/app_cubit.dart';
 import 'package:trade_app/cubits/pair/pair_cubit.dart';
 import 'package:trade_app/screens/splash_screen.dart';
@@ -26,7 +27,8 @@ String generateHtmlUri(String symbol) {
       <script type="text/javascript">
       new TradingView.widget(
       {
-        "autosize": true,
+        "width": 1000,
+        "height": 800,
         "symbol": "NASDAQ:$symbol",
         "interval": "D",
         "timezone": "Etc/UTC",
@@ -56,9 +58,6 @@ class _InitialScreenState extends State<InitialScreen> {
 
   late TradingViewSymbol initSymbol;
 
-
-
-
   askForNotifications() async {
     await Permission.notification.isDenied.then((value) async {
       if (value) {
@@ -76,7 +75,7 @@ class _InitialScreenState extends State<InitialScreen> {
     String htmlUri = generateHtmlUri(stockSymbol);
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
+      ..setBackgroundColor(background)
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) async {
@@ -100,10 +99,16 @@ class _InitialScreenState extends State<InitialScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppCubit, AppState>(builder: (context, state) {
-      if (state.isLoaded) {
+    return BlocBuilder<AppCubit, AppState>(builder: (context, appState) {
+      if (appState.isLoaded) {
         return BlocBuilder<PairCubit, PairState>(
           builder: (context, state) {
+            if (appState.isPairChanged) {
+              String stockSymbol = state.chosenPair.name;
+              String htmlUri = generateHtmlUri(stockSymbol);
+              controller.loadRequest(Uri.parse(htmlUri));
+              context.read<AppCubit>().setIsPairChanged(false);
+            }
             return TradeScreen(controller: controller);
           },
         );

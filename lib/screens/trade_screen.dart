@@ -10,6 +10,8 @@ import 'package:trade_app/config/scale.dart';
 import 'package:trade_app/cubits/app/app_cubit.dart';
 import 'package:trade_app/cubits/pair/pair_cubit.dart';
 import 'package:trade_app/cubits/pair/pair_cubit.dart';
+import 'package:trade_app/cubits/trade/trade_cubit.dart';
+import 'package:trade_app/initial.dart';
 import 'package:trade_app/layout.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -23,7 +25,6 @@ class TradeScreen extends StatefulWidget {
 }
 
 class _TradeScreenState extends State<TradeScreen> {
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
@@ -33,8 +34,8 @@ class _TradeScreenState extends State<TradeScreen> {
             elevation: 0,
             title: Text(
               "Trade",
-              style: TextStyle(
-                  fontWeight: FontWeight.w700, fontSize: scale(22)),
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, fontSize: scale(22)),
             ),
           ),
           child: Container(
@@ -70,8 +71,7 @@ class _TradeScreenState extends State<TradeScreen> {
                           style: ElevatedButton.styleFrom(
                               backgroundColor: secondButton,
                               shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(scale(12)),
+                                borderRadius: BorderRadius.circular(scale(12)),
                               ),
                               elevation: 0),
                           child: Row(
@@ -95,83 +95,102 @@ class _TradeScreenState extends State<TradeScreen> {
                 SizedBox(
                   height: scale(16),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: scale(30)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          height: scale(54),
-                          child: ElevatedButton(
-                            onPressed: () {
-
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: secondButton,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(scale(12)),
-                                ),
-                                elevation: 0),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(),
-                                Text(
-                                  'GPB/USD',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
+                BlocBuilder<TradeCubit, TradeState>(builder: (context, state) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: scale(30)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: scale(54),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: secondButton,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(scale(12)),
                                   ),
-                                ),
-                                SvgPicture.asset(
-                                    "assets/icons/arrow-left.svg")
-                              ],
+                                  elevation: 0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(),
+                                  Text(
+                                    'GPB/USD',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  SvgPicture.asset(
+                                      "assets/icons/arrow-left.svg")
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: scale(11),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          height: scale(54),
-                          child: ElevatedButton(
-                            onPressed: () {
-
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: secondButton,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(scale(12)),
-                                ),
-                                elevation: 0),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(),
-                                Text(
-                                  'GPB/USD',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
+                        SizedBox(
+                          width: scale(11),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: scale(54),
+                            decoration: BoxDecoration(
+                                color: secondButton,
+                                borderRadius: BorderRadius.circular(scale(12))),
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.symmetric(horizontal: scale(16.5)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Intestment',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: scale(12),
+                                        color: white),
                                   ),
-                                ),
-                                SvgPicture.asset(
-                                    "assets/icons/arrow-left.svg")
-                              ],
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          context.read<TradeCubit>().decreaseInvestmentCount();
+                                        },
+                                        child: SvgPicture.asset(
+                                            "assets/icons/minus-cirlce.svg",),
+                                      ),
+                                      Text(
+                                        state.investmentCount.toString(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            color: white,
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          context.read<TradeCubit>().increaseInvestmentCount();
+                                        },
+                                        child: SvgPicture.asset(
+                                            "assets/icons/add-circle.svg"),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                        )
+                      ],
+                    ),
+                  );
+                }),
                 SizedBox(
                   height: scale(11),
                 ),
@@ -197,8 +216,7 @@ class _TradeScreenState extends State<TradeScreen> {
                               'Sell',
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: scale(24)
-                              ),
+                                  fontSize: scale(24)),
                             ),
                           ),
                         ),
@@ -224,8 +242,7 @@ class _TradeScreenState extends State<TradeScreen> {
                               'Buy',
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: scale(24)
-                              ),
+                                  fontSize: scale(24)),
                             ),
                           ),
                         ),

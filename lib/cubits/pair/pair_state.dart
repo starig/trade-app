@@ -8,26 +8,19 @@ enum TradingViewSymbol {
   TSLA,
   FB,
   NVDA,
-  BABA,
-  JPM,
-  JNJ,
-  V,
-  WMT,
-  BAC,
-  XOM,
-  SPX
+  COIN,
+  PYPL,
+  ABNB,
 }
 
 class PairState {
   TradingViewSymbol chosenPair;
-  List<TradingViewSymbol> allPairs;
 
-  PairState({required this.chosenPair, required this.allPairs});
+  PairState({required this.chosenPair,});
 
-  PairState copyWith({TradingViewSymbol? chosenPair, List<TradingViewSymbol>? allPairs}) {
+  PairState copyWith({TradingViewSymbol? chosenPair}) {
     return PairState(
       chosenPair: chosenPair ?? this.chosenPair,
-      allPairs: allPairs ?? this.allPairs
     );
   }
 }

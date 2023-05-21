@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trade_app/config/colors.dart';
 import 'package:trade_app/config/scale.dart';
+import 'package:trade_app/cubits/app/app_cubit.dart';
 import 'package:trade_app/cubits/pair/pair_cubit.dart';
 import 'package:trade_app/layout.dart';
 
@@ -14,59 +15,6 @@ class ChoosePairScreen extends StatefulWidget {
   State<ChoosePairScreen> createState() => _ChoosePairScreenState();
 }
 
-String getPairText(TradingViewSymbol symbol) {
-  String pairText;
-
-  switch (symbol) {
-    case TradingViewSymbol.AAPL:
-      pairText = "AAPL";
-      break;
-    case TradingViewSymbol.GOOGL:
-      pairText = "GOOGL";
-      break;
-    case TradingViewSymbol.MSFT:
-      pairText = "MSFT";
-      break;
-    case TradingViewSymbol.AMZN:
-      pairText = "AMZN";
-      break;
-    case TradingViewSymbol.TSLA:
-      pairText = "TSLA";
-      break;
-    case TradingViewSymbol.FB:
-      pairText = "FB";
-      break;
-    case TradingViewSymbol.NVDA:
-      pairText = "NVDA";
-      break;
-    case TradingViewSymbol.BABA:
-      pairText = "BABA";
-      break;
-    case TradingViewSymbol.JPM:
-      pairText = "JPM";
-      break;
-    case TradingViewSymbol.JNJ:
-      pairText = "JNJ";
-      break;
-    case TradingViewSymbol.V:
-      pairText = "V";
-      break;
-    case TradingViewSymbol.WMT:
-      pairText = "WMT";
-      break;
-    case TradingViewSymbol.BAC:
-      pairText = "BAC";
-      break;
-    case TradingViewSymbol.XOM:
-      pairText = "XOM";
-      break;
-    case TradingViewSymbol.SPX:
-      pairText = "SPX";
-      break;
-  }
-
-  return pairText;
-}
 
 class _ChoosePairScreenState extends State<ChoosePairScreen> {
   @override
@@ -76,24 +24,22 @@ class _ChoosePairScreenState extends State<ChoosePairScreen> {
         List<Widget> children = [];
 
         for (TradingViewSymbol pair in TradingViewSymbol.values) {
-          String pairText = getPairText(pair);
-          children.add(Expanded(
-            flex: 1,
-            child: Container(
-              height: scale(54),
-              child: ElevatedButton(
-                onPressed: () {
-                  context.read<PairCubit>().setChosenPair(pair);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: pair == state.chosenPair ? green : secondButton,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(scale(12)),
-                  ),
+
+          children.add(Container(
+            height: scale(54),
+            child: ElevatedButton(
+              onPressed: () {
+                context.read<PairCubit>().setChosenPair(pair);
+                context.read<AppCubit>().setIsPairChanged(true);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: pair == state.chosenPair ? green : secondButton,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(scale(12)),
                 ),
-                child: Text(pairText),
               ),
+              child: Text(pair.name),
             ),
           ));
         }

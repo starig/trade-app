@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         builder: (context) => MaterialApp(
           title: "Trade App",
           debugShowCheckedModeBanner: false,
-          initialRoute: '/trade_screen',
+          initialRoute: '/',
           // home: InitialScreen(),
           routes: routes,
           theme: ThemeData(

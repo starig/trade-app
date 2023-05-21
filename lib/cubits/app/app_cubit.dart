@@ -6,7 +6,8 @@ class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppState(
     loadingProgress: 0,
     showBottomNavbar: false,
-    isLoaded: false
+    isLoaded: false,
+    isPairChanged: false
   ));
 
   setLoadingProgress(double value) {
@@ -22,5 +23,10 @@ class AppCubit extends Cubit<AppState> {
   setIsLoaded(bool value) {
     state.isLoaded = value;
     emit(state.copyWith(isLoaded: state.isLoaded));
+  }
+
+  setIsPairChanged(bool value) {
+    state.isPairChanged = value;
+    emit(state.copyWith(isPairChanged: state.isPairChanged));
   }
 }

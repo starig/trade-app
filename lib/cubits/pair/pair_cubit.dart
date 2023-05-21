@@ -6,13 +6,7 @@ part 'pair_state.dart';
 class PairCubit extends Cubit<PairState> {
   PairCubit()
       : super(PairState(
-          chosenPair: TradingViewSymbol.AAPL,
-          allPairs: [
-            TradingViewSymbol.AAPL,
-            TradingViewSymbol.AMZN,
-            TradingViewSymbol.BABA,
-            TradingViewSymbol.BAC,
-          ],
+          chosenPair: TradingViewSymbol.TSLA,
         ));
 
   setChosenPair(TradingViewSymbol value) {
