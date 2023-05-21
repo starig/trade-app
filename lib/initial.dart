@@ -31,11 +31,11 @@ String generateHtmlUri(String symbol) {
         "interval": "D",
         "timezone": "Etc/UTC",
         "theme": "dark",
-        "style": "8",
+        "style": "1",
         "locale": "en",
         "toolbar_bg": "#f1f3f6",
         "enable_publishing": false,
-        "hide_top_toolbar": true,
+        "hide_top_toolbar": false,
         "hide_legend": true,
         "allow_symbol_change": true,
         "save_image": false,
@@ -57,14 +57,12 @@ class _InitialScreenState extends State<InitialScreen> {
   late TradingViewSymbol initSymbol;
 
 
-  String stockSymbol = 'AAPL';
 
 
   askForNotifications() async {
     await Permission.notification.isDenied.then((value) async {
       if (value) {
         var response = await Permission.notification.request();
-        inspect(response);
       }
       context.read<AppCubit>().setIsLoaded(true);
     });
@@ -74,6 +72,7 @@ class _InitialScreenState extends State<InitialScreen> {
   @override
   void initState() {
     super.initState();
+    String stockSymbol = context.read<PairCubit>().state.chosenPair.name;
     String htmlUri = generateHtmlUri(stockSymbol);
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)

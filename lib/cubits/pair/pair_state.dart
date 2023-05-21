@@ -20,12 +20,14 @@ enum TradingViewSymbol {
 
 class PairState {
   TradingViewSymbol chosenPair;
+  List<TradingViewSymbol> allPairs;
 
-  PairState({required this.chosenPair});
+  PairState({required this.chosenPair, required this.allPairs});
 
-  PairState copyWith({TradingViewSymbol? chosenPair}) {
+  PairState copyWith({TradingViewSymbol? chosenPair, List<TradingViewSymbol>? allPairs}) {
     return PairState(
       chosenPair: chosenPair ?? this.chosenPair,
+      allPairs: allPairs ?? this.allPairs
     );
   }
 }
