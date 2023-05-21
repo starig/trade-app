@@ -8,3 +8,4 @@ Color line = const Color(0xFF2E3241);
 Color blueGrey = const Color(0xFF787D8F);
 Color secondButton = const Color(0xFF333749);
 Color red = const Color(0xFFFE3D43);
+Color tableBg = const Color(0xFF2E303E);
