@@ -1,15 +1,18 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:trade_app/config/colors.dart';
+import 'package:trade_app/config/scale.dart';
 import 'package:trade_app/cubits/app/app_cubit.dart';
 import 'package:trade_app/cubits/pair/pair_cubit.dart';
 import 'package:trade_app/screens/splash_screen.dart';
 import 'package:trade_app/screens/trade_screen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import 'screens/top_screen.dart';
 
 class InitialScreen extends StatefulWidget {
   const InitialScreen({Key? key}) : super(key: key);
@@ -97,6 +100,15 @@ class _InitialScreenState extends State<InitialScreen> {
       ..loadRequest(Uri.parse(htmlUri));
   }
 
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(builder: (context, appState) {
@@ -109,7 +121,52 @@ class _InitialScreenState extends State<InitialScreen> {
               controller.loadRequest(Uri.parse(htmlUri));
               context.read<AppCubit>().setIsPairChanged(false);
             }
-            return TradeScreen(controller: controller);
+            List<Widget> _screens = [
+              TradeScreen(controller: controller),
+              TopScreen(),
+            ];
+            return Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/BG.jpg"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Scaffold(
+                backgroundColor:
+                appState.isLoaded ? background : Colors.transparent,
+                body: _screens[_selectedIndex],
+                bottomNavigationBar: appState.showBottomNavbar ? Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          top: BorderSide(
+                              width: scale(0.5),
+                              color: line
+                          )
+                      )
+                  ),
+                  child: BottomNavigationBar(
+                    backgroundColor: background,
+                    currentIndex: _selectedIndex,
+                    selectedItemColor: green,
+                    unselectedItemColor: blueGrey,
+                    onTap: _onItemTapped,
+                    items: [
+                      BottomNavigationBarItem(
+                        icon: SvgPicture.asset("assets/icons/trade.svg"),
+                        activeIcon: SvgPicture.asset("assets/icons/trade-active.svg"),
+                        label: 'Trade',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: SvgPicture.asset("assets/icons/user.svg"),
+                        activeIcon: SvgPicture.asset("assets/icons/user-active.svg"),
+                        label: 'Top',
+                      ),
+                    ],
+                  ),
+                ) : null,
+              ),
+            );
           },
         );
       } else {

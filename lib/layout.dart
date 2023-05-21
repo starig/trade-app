@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trade_app/config/colors.dart';
 import 'package:trade_app/config/scale.dart';
 import 'package:trade_app/cubits/app/app_cubit.dart';
-import 'package:trade_app/cubits/app/app_cubit.dart';
 
 class Layout extends StatefulWidget {
   final Widget child;
@@ -25,6 +24,7 @@ class _LayoutState extends State<Layout> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,35 +41,6 @@ class _LayoutState extends State<Layout> {
             backgroundColor:
                 state.isLoaded ? background : Colors.transparent,
             body: widget.child,
-            bottomNavigationBar: state.showBottomNavbar ? Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    width: scale(0.5),
-                    color: line
-                  )
-                )
-              ),
-              child: BottomNavigationBar(
-                backgroundColor: background,
-                currentIndex: _selectedIndex,
-                selectedItemColor: green,
-                unselectedItemColor: blueGrey,
-                onTap: _onItemTapped,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: SvgPicture.asset("assets/icons/trade.svg"),
-                    activeIcon: SvgPicture.asset("assets/icons/trade-active.svg"),
-                    label: 'Trade',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: SvgPicture.asset("assets/icons/user.svg"),
-                    activeIcon: SvgPicture.asset("assets/icons/user-active.svg"),
-                    label: 'Top',
-                  ),
-                ],
-              ),
-            ) : null,
           );
         },
       ),

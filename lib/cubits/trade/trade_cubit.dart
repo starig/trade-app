@@ -1,8 +1,6 @@
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:trade_app/config/helpers.dart';
 
 part 'trade_state.dart';
 
