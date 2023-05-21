@@ -41,6 +41,7 @@ class _LayoutState extends State<Layout> {
             backgroundColor:
                 state.isLoaded ? background : Colors.transparent,
             body: widget.child,
+            resizeToAvoidBottomInset: false,
             bottomNavigationBar: state.showBottomNavbar ? Container(
               decoration: BoxDecoration(
                 border: Border(
